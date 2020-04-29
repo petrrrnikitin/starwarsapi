@@ -1,0 +1,32 @@
+.header {
+  @apply bg-cover bg-auto bg-repeat-space max-w-full;
+  background: url('/images/background.png');
+  height: 480px;
+}
+.preloader {
+  animation: preloader-rotate 3s infinite linear;
+}
+
+@keyframes preloader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.preloader-engine {
+  animation: engine 0.6s ease infinite;
+}
+.preloader-engine:last-child {
+  animation-delay: 0.1s;
+}
+.preloader-engine:first-child {
+  animation-delay: -0.1s;
+}
+
+@keyframes engine {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
