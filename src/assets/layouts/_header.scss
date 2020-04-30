@@ -1,6 +1,5 @@
 .header {
-  @apply bg-cover bg-auto bg-repeat-space max-w-full;
-  background: url('/images/background.png');
+  background: url('/images/background.png') center/cover no-repeat;
   height: 480px;
 }
 .preloader {

@@ -7,7 +7,7 @@ module.exports = {
       'sm': '540px',
       'md': '768px',
       'lg': '960px',
-      'xl': '1440px',
+      'xl': '1200px',
     },
     colors: {
       transparent: 'transparent',
@@ -17,7 +17,8 @@ module.exports = {
       white: '#fff',
       sw: {
         gray: '#E5E5E5',
-        black: '#1A1A1A'
+        black: '#1A1A1A',
+        graytext: '#808080'
       },
 
       gray: {
@@ -151,6 +152,7 @@ module.exports = {
       '48': '12rem',
       '56': '14rem',
       '64': '16rem',
+      '80': '20rem',
     },
     backgroundColor: theme => theme('colors'),
     backgroundPosition: {
