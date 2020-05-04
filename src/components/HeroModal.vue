@@ -50,7 +50,7 @@
                                   fill="#808080"/>
                         </svg>
                             Films</span>
-                        <div class="flex md:pl-6 flex-col">
+                        <div class="flex flex-col">
                             <span v-for="film in filmsValue" class="description">{{film}} </span>
                         </div>
                     </div>
@@ -85,27 +85,34 @@
         methods: {
             close() {
                 this.$emit('close');
-            }
-        },
-        props: {show: Boolean, name: String, species: Array, homeworld: String, birth_year: String, gender: String, films: Array},
-        mounted() {
-            if (this.show) {
+
+            },
+            getHomeworld(){
                 axios.get(this.homeworld)
                     .then(response => this.homeworldValue = response.data.name)
                     .catch(error => console.log(error));
-
+            },
+            getFilms() {
                 this.films.forEach(film => {
                     axios.get(film)
                         .then(response => this.filmsValue.push(response.data.title))
                         .catch(error => console.log(error))
                 });
-
+            },
+            getSpecies() {
                 this.species.length
                     ? axios.get(this.species[0])
-                    .then(response => this.speciesValue = response.data.name)
-                    .catch(error => console.log(error))
+                        .then(response => this.speciesValue = response.data.name)
+                        .catch(error => console.log(error))
                     : false;
             }
+
+        },
+        props: {show: Boolean, name: String, species: Array, homeworld: String, birth_year: String, gender: String, films: Array},
+        mounted () {
+                this.getHomeworld();
+                this.getSpecies();
+                this.getFilms();
         }
     }
 </script>
@@ -124,7 +131,7 @@
         }
     }
     .title {
-        @apply text-sw-graytext self-start w-2/5 leading-tight;
+        @apply text-sw-graytext items-center flex self-start w-2/5 leading-tight;
         @media (max-width: 767px) {
             @apply w-1/2;
         }

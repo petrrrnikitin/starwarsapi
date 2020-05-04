@@ -44,19 +44,21 @@
                 <div class="flex flex-col flex-1" v-if="!loading">
                     <Search @updateresults="heroes = $event"/>
                     <div class="flex pt-20 flex-1 flex-wrap">
-                        <div @click="showModal(hero)" class="flex w-full md:w-1/2 md:px-8 md:py-8 px-6 py-6" v-for="hero in heroes">
+                        <div @click="showModal(hero)" class="flex w-full md:w-1/2 md:px-8 md:py-8 px-6 py-6"
+                             v-for="hero in heroes">
                             <HeroCard v-bind="hero"/>
                         </div>
                     </div>
                 </div>
             </transition>
+
         </main>
 
         <footer class="text-center mt-40 text-lg font-bold text-white uppercase bg-sw-black py-12">
             STAR WARS CHARACTER Encyclopedia, 2019
         </footer>
 
-        <HeroModal @close="close" :show="show" v-if="modalhero" v-bind="modalhero" ref="openHero"/>
+        <HeroModal @close="close" :show="show" v-if="show" v-bind="modalhero" ref="openHero"/>
     </div>
 </template>
 
@@ -75,6 +77,7 @@
                 heroes: {},
                 show: false,
                 modalhero: null,
+                next: null,
             }
         },
         methods: {
@@ -84,17 +87,35 @@
             },
             close() {
                 this.show = false;
+            },
+            loadMore() {
+                if (Math.round(document.documentElement.scrollTop + window.innerHeight) === Math.round(document.documentElement.offsetHeight) && this.next) {
+                    axios.get(this.next)
+                        .then(response => {
+                            this.next = response.data.next;
+                            response.data.results.forEach(result => this.heroes.push(result))
+                        })
+                        .catch(error => console.log(error));
+                }
             }
-
+        },
+        created() {
+            window.addEventListener('scroll', this.loadMore);
         },
         mounted() {
             setTimeout(() => {
-                    axios.get('https://swapi.dev/api/people')
-                        .then(response => this.heroes = response.data.results)
-                        .catch(error => console.log(error));
-                    this.loading = false;
-                }, 2000)
-        }
+                axios.get('https://swapi.dev/api/people')
+                    .then(response => {
+                        this.heroes = response.data.results;
+                        this.next = response.data.next;
+                        this.loading = false;
+                    })
+                    .catch(error => console.log(error));
+
+            }, 2000);
+
+        },
+
     }
 </script>
 
@@ -106,6 +127,7 @@
             @apply h-80;
         }
     }
+
     .preloader {
         animation: preloader-rotate 3s infinite linear;
     }
@@ -115,12 +137,15 @@
             transform: rotate(360deg);
         }
     }
+
     .preloader-engine {
         animation: engine 0.6s ease infinite;
     }
+
     .preloader-engine:last-child {
         animation-delay: 0.1s;
     }
+
     .preloader-engine:first-child {
         animation-delay: -0.1s;
     }
@@ -133,6 +158,7 @@
             opacity: 0.1;
         }
     }
+
     .fade-enter-active, .fade-leave-active {
         transition: all 1s;
     }
