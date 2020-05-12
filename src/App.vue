@@ -104,7 +104,7 @@
         },
         mounted() {
             setTimeout(() => {
-                axios.get('https://swapi.dev/api/people')
+                axios.get('https://swapi.dev/api/people/')
                     .then(response => {
                         this.heroes = response.data.results;
                         this.next = response.data.next;
