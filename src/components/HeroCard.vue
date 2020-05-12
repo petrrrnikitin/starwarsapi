@@ -1,7 +1,7 @@
 <template>
     <transition name="hero">
         <div class="hover:shadow-sw flex w-full cursor-pointer rounded-lg h-80 bg-sw-black" v-if="!loading">
-            <div class="flex flex-col mx-auto items-center justify-center">
+            <div class="flex flex-col mx-auto items-center mt-20">
                 <CircleName :name="name"/>
                 <span class="text-white py-3 text-lg">{{name}}</span>
                 <span v-for="specie in speciesValue" class="text-sw-graytext text-sm">{{specie}} </span>
@@ -26,7 +26,7 @@
         created() {
            if (this.species.length > 0){
                this.species.forEach(specie => {
-                   axios.get(specie)
+                   axios.get(specie.replace(/^http:\/\//i, 'https://'))
                        .then(response => this.speciesValue.push(response.data.name))
                        .catch(error => console.log(error))
                })

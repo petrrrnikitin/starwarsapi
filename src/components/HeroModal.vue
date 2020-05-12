@@ -88,23 +88,25 @@
 
             },
             getHomeworld(){
-                axios.get(this.homeworld)
+                axios.get(this.homeworld.replace(/^http:\/\//i, 'https://'))
                     .then(response => this.homeworldValue = response.data.name)
                     .catch(error => console.log(error));
             },
             getFilms() {
                 this.films.forEach(film => {
-                    axios.get(film)
+                    axios.get(film.replace(/^http:\/\//i, 'https://'))
                         .then(response => this.filmsValue.push(response.data.title))
                         .catch(error => console.log(error))
                 });
             },
             getSpecies() {
-                this.species.length
-                    ? axios.get(this.species[0])
-                        .then(response => this.speciesValue = response.data.name)
-                        .catch(error => console.log(error))
-                    : false;
+                if (this.species.length > 0) {
+                    this.species.forEach(specie => {
+                        axios.get(specie.replace(/^http:\/\//i, 'https://'))
+                            .then(response => this.speciesValue.push(response.data.name))
+                            .catch(error => console.log(error))
+                    })
+                }
             }
 
         },

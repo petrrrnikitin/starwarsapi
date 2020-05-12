@@ -107,7 +107,7 @@
                 axios.get('https://swapi.dev/api/people/')
                     .then(response => {
                         this.heroes = response.data.results;
-                        this.next = response.data.next;
+                        this.next = response.data.next.replace(/^http:\/\//i, 'https://');
                         this.loading = false;
                     })
                     .catch(error => console.log(error));
@@ -122,7 +122,7 @@
 <style lang="scss" scoped>
     .header {
         @apply mx-auto flex h-160;
-        background: url('/images/background.png') center/cover no-repeat;
+        background: url('/starwarsAPI/images/background.png') center/cover no-repeat;
         @media (max-width: 767px) {
             @apply h-80;
         }
