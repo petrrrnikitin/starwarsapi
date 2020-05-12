@@ -4,7 +4,7 @@
             <div class="flex flex-col mx-auto items-center justify-center">
                 <CircleName :name="name"/>
                 <span class="text-white py-3 text-lg">{{name}}</span>
-                <span v-if="speciesValue" class="text-sw-graytext text-sm">{{speciesValue}} </span>
+                <span v-for="specie in speciesValue" class="text-sw-graytext text-sm">{{specie}} </span>
             </div>
         </div>
     </transition>
@@ -18,16 +18,19 @@
         data() {
             return {
                 loading: true,
-                speciesValue: null
+                speciesValue: []
             }
         },
         components: {CircleName},
         props: {name: String, species: Array},
         created() {
            if (this.species.length > 0){
-               axios.get(this.species[0])
-                   .then(response => this.speciesValue = response.data.name )
-                   .catch(error => console.log(error));
+               this.species.forEach(specie => {
+                   axios.get(specie)
+                       .then(response => this.speciesValue.push(response.data.name))
+                       .catch(error => console.log(error))
+               })
+
            }
         },
         mounted() {
